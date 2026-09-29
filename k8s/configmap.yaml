@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-3-config
+spec:
+  data:
+    NODE_ENV: "production"
+    PORT: "3000"

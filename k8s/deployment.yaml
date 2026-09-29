@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-3-deployment
+  labels:
+    app: api-3-node
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-3-node
+  template:
+    metadata:
+      labels:
+        app: api-3-node
+    spec:
+      containers:
+        - name: api-3-container
+          image: node:18-alpine
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: api-3-config
+            - secretRef:
+                name: api-3-secret
+          volumeMounts:
+            - mountPath: /app/data
+              name: storage-volume
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "300m"
+              memory: "512Mi"
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: api-3-pvc
